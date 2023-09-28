@@ -9,7 +9,7 @@ const (
 	defaultErrorMessage = "field is not valid"
 )
 
-type ValidationFunctions func(interface{}) (bool, string)
+type ValidationFunctions func(bool, interface{}) (bool, string)
 
 type Rule struct {
 	VariableName string
@@ -18,15 +18,9 @@ type Rule struct {
 	Function     []ValidationFunctions // AND WHAT WAS THIS?
 }
 
-type VariableName string
 type Error string
 
 type ErrorMessages map[string][]Error
-
-//type ErrorMessages struct {
-//	VariableName string  `json:"name"`
-//	Errors       []Error `json:"errors"`
-//}
 
 func RunValidation(rules []Rule) ErrorMessages {
 	errorMessages := make(ErrorMessages)
@@ -34,7 +28,7 @@ func RunValidation(rules []Rule) ErrorMessages {
 	for _, prop := range rules {
 		var errors []Error
 		for _, rule := range prop.Function {
-			valid, errMsg := rule(prop.Value)
+			valid, errMsg := rule(prop.Required, prop.Value)
 			if !valid {
 				errors = append(errors, Error(errMsg))
 			}
@@ -42,10 +36,6 @@ func RunValidation(rules []Rule) ErrorMessages {
 
 		if errors != nil {
 			errorMessages[prop.VariableName] = errors
-			//errorMessages = append(errorMessages, ErrorMessages{
-			//	VariableName: prop.VariableName,
-			//	Errors:       errors,
-			//})
 		}
 	}
 
@@ -55,15 +45,16 @@ func RunValidation(rules []Rule) ErrorMessages {
 const MinLengthError = "is not the minimum length"
 
 func MinLength(minLength int) ValidationFunctions {
-	return func(value interface{}) (bool, string) {
+	return func(required bool, value interface{}) (bool, string) {
 		if v, ok := value.(string); ok {
-			if len(v) == 0 && v == "" {
-				return false, MinLengthError
+			if required && v == "" {
+				return true, ""
 			}
 			if len(v) >= minLength {
 				return true, ""
 			}
 		}
+		
 		return false, MinLengthError
 	}
 }
@@ -85,7 +76,7 @@ func main() {
 	}
 
 	rules := []Rule{
-		{"Make", carInput.Make, true, []ValidationFunctions{MinLength(13)}},
+		{"Make", carInput.Make, false, []ValidationFunctions{MinLength(13)}},
 	}
 
 	errors := RunValidation(rules)
