@@ -1,49 +1,70 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 const (
 	defaultErrorMessage = "field is not valid"
 )
 
-type ValidationFunction func(interface{}) bool
+type ValidationFunctions func(interface{}) (bool, string)
 
 type Rule struct {
 	VariableName string
 	Value        interface{} // WHAT WAS THIS?
 	Required     bool
-	Function     ValidationFunction // AND WHAT WAS THIS?
+	Function     []ValidationFunctions // AND WHAT WAS THIS?
 }
 
-type ErrorMessage struct {
-	VariableName string
-	Errors       string
-}
+type VariableName string
+type Error string
 
-func RunValidation(rules []Rule) []ErrorMessage {
-	var errors []ErrorMessage
+type ErrorMessages map[string][]Error
 
-	for _, rule := range rules {
-		valid := rule.Function(rule.Value)
-		if !valid {
-			errors = append(errors, ErrorMessage{rule.VariableName, defaultErrorMessage})
+//type ErrorMessages struct {
+//	VariableName string  `json:"name"`
+//	Errors       []Error `json:"errors"`
+//}
+
+func RunValidation(rules []Rule) ErrorMessages {
+	errorMessages := make(ErrorMessages)
+
+	for _, prop := range rules {
+		var errors []Error
+		for _, rule := range prop.Function {
+			valid, errMsg := rule(prop.Value)
+			if !valid {
+				errors = append(errors, Error(errMsg))
+			}
+		}
+
+		if errors != nil {
+			errorMessages[prop.VariableName] = errors
+			//errorMessages = append(errorMessages, ErrorMessages{
+			//	VariableName: prop.VariableName,
+			//	Errors:       errors,
+			//})
 		}
 	}
 
-	return errors
+	return errorMessages
 }
 
-func MinLength(minLength int) ValidationFunction {
-	return func(value interface{}) bool {
+const MinLengthError = "is not the minimum length"
+
+func MinLength(minLength int) ValidationFunctions {
+	return func(value interface{}) (bool, string) {
 		if v, ok := value.(string); ok {
 			if len(v) == 0 && v == "" {
-				return false
+				return false, MinLengthError
 			}
 			if len(v) >= minLength {
-				return true
+				return true, ""
 			}
 		}
-		return false
+		return false, MinLengthError
 	}
 }
 
@@ -64,9 +85,10 @@ func main() {
 	}
 
 	rules := []Rule{
-		{"Make", carInput.Make, true, MinLength(13)},
+		{"Make", carInput.Make, true, []ValidationFunctions{MinLength(13)}},
 	}
 
 	errors := RunValidation(rules)
-	fmt.Printf("%v", errors)
+	j, _ := json.Marshal(errors)
+	fmt.Println(string(j))
 }
