@@ -6,11 +6,13 @@ const (
 	defaultErrorMessage = "field is not valid"
 )
 
+type ValidationFunction func(interface{}) bool
+
 type Rule struct {
 	VariableName string
-	Value        any // could be any type.
+	Value        interface{} // WHAT WAS THIS?
 	Required     bool
-	Function     func() bool // could have any signature.
+	Function     ValidationFunction // AND WHAT WAS THIS?
 }
 
 type ErrorMessage struct {
@@ -22,8 +24,8 @@ func RunValidation(rules []Rule) []ErrorMessage {
 	var errors []ErrorMessage
 
 	for _, rule := range rules {
-		err := rule.Function
-		if err != nil {
+		valid := rule.Function(rule.Value)
+		if !valid {
 			errors = append(errors, ErrorMessage{rule.VariableName, defaultErrorMessage})
 		}
 	}
@@ -31,16 +33,16 @@ func RunValidation(rules []Rule) []ErrorMessage {
 	return errors
 }
 
-func MinLength() func(value string, minLength int) bool {
-	return func(value string, minLength int) bool {
-		if len(value) == 0 && value == "" {
-			return true
+func MinLength(minLength int) ValidationFunction {
+	return func(value interface{}) bool {
+		if v, ok := value.(string); ok {
+			if len(v) == 0 && v == "" {
+				return false
+			}
+			if len(v) >= minLength {
+				return true
+			}
 		}
-
-		if len(value) >= minLength {
-			return true
-		}
-
 		return false
 	}
 }
@@ -62,7 +64,7 @@ func main() {
 	}
 
 	rules := []Rule{
-		{"Make", &carInput.Make, true, MinLength},
+		{"Make", carInput.Make, true, MinLength(13)},
 	}
 
 	errors := RunValidation(rules)

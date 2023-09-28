@@ -1,10 +1,10 @@
 package responses
 
-type singleItemResponseType struct {
+type SingleItemResponse struct {
 	Data interface{} `json:"data"`
 }
 
-type multiItemResponseType struct {
+type MultiItemResponse struct {
 	Data interface{} `json:"data"`
 	PaginationType
 }
@@ -16,7 +16,7 @@ type PaginationType struct {
 	TotalCount  int `json:"totalCount"`
 }
 
-type ValidationErrorResponseType struct {
+type ValidationErrorResponse struct {
 	Name    string            `json:"name"`
 	Message string            `json:"message"`
 	Code    int               `json:"code"`
