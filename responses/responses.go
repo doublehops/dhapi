@@ -1,5 +1,7 @@
 package responses
 
+import "net/http"
+
 func GetSingleItemResponse(data interface{}) SingleItemResponse {
 	return SingleItemResponse{
 		Data: data,
@@ -13,11 +15,11 @@ func GetMultiItemResponse(data interface{}, pagination PaginationType) MultiItem
 	}
 }
 
-func GetValidationError(code int, errors []ValidationField) ValidationErrorResponse {
+func GetValidationErrorResponse(errors ErrorMessages) ValidationErrorResponse {
 	return ValidationErrorResponse{
 		Name:    "Validation failed",
 		Message: "One or more validation errors occurred",
-		Code:    code,
+		Code:    http.StatusBadRequest,
 		Status:  "error",
 		Errors:  errors,
 	}

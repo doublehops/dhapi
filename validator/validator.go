@@ -1,5 +1,7 @@
 package validator
 
+import "github.com/doublehops/dhapi/responses"
+
 const (
 	RequiredPropertyError   = "this is a required property"
 	ProcessingPropertyError = "unable to process property"
@@ -16,17 +18,17 @@ type Rule struct {
 
 type Error string
 
-type ErrorMessages map[string][]Error
+//type ErrorMessages map[string][]Error
 
-func RunValidation(rules []Rule) ErrorMessages {
-	errorMessages := make(ErrorMessages)
+func RunValidation(rules []Rule) responses.ErrorMessages {
+	errorMessages := make(responses.ErrorMessages)
 
 	for _, prop := range rules {
-		var errors []Error
+		var errors []string
 		for _, rule := range prop.Function {
 			valid, errMsg := rule(prop.Required, prop.Value)
 			if !valid {
-				errors = append(errors, Error(errMsg))
+				errors = append(errors, errMsg)
 			}
 		}
 

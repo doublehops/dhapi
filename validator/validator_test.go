@@ -1,6 +1,7 @@
 package validator
 
 import (
+	"github.com/doublehops/dhapi/responses"
 	"reflect"
 	"testing"
 )
@@ -9,7 +10,7 @@ func TestValidate(t *testing.T) {
 	tests := []struct {
 		name           string
 		rules          []Rule
-		expectedErrors ErrorMessages
+		expectedErrors responses.ErrorMessages
 	}{
 		{
 			name: "allPass",
@@ -21,7 +22,7 @@ func TestValidate(t *testing.T) {
 					Function:     []ValidationFunctions{MinLength(4, "")},
 				},
 			},
-			expectedErrors: ErrorMessages{},
+			expectedErrors: responses.ErrorMessages{},
 		},
 		{
 			name: "makeFailMinLength",
@@ -33,7 +34,7 @@ func TestValidate(t *testing.T) {
 					Function:     []ValidationFunctions{MinLength(10, "")},
 				},
 			},
-			expectedErrors: ErrorMessages{
+			expectedErrors: responses.ErrorMessages{
 				"Make": {MinLengthDefaultMessage},
 			},
 		},
@@ -47,7 +48,7 @@ func TestValidate(t *testing.T) {
 					Function:     []ValidationFunctions{MinLength(10, "")},
 				},
 			},
-			expectedErrors: ErrorMessages{
+			expectedErrors: responses.ErrorMessages{
 				"Make": {RequiredPropertyError},
 			},
 		},
@@ -61,7 +62,7 @@ func TestValidate(t *testing.T) {
 					Function:     []ValidationFunctions{MinLength(10, "MyCustomerErrorMessage")},
 				},
 			},
-			expectedErrors: ErrorMessages{
+			expectedErrors: responses.ErrorMessages{
 				"Make": {"MyCustomerErrorMessage"},
 			},
 		},

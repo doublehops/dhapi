@@ -17,14 +17,12 @@ type PaginationType struct {
 }
 
 type ValidationErrorResponse struct {
-	Name    string            `json:"name"`
-	Message string            `json:"message"`
-	Code    int               `json:"code"`
-	Status  string            `json:"status"`
-	Type    string            `json:"type"`
-	Errors  []ValidationField `json:"errors"`
+	Name    string        `json:"name"`
+	Message string        `json:"message"`
+	Code    int           `json:"code"`
+	Status  string        `json:"status"`
+	Type    string        `json:"type"`
+	Errors  ErrorMessages `json:"errors"`
 }
 
-type ValidationField map[string][]string
-
-type CustomerErrorMessages map[string]map[string]string
+type ErrorMessages map[string][]string
