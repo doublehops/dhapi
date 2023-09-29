@@ -64,7 +64,7 @@ func MaxLength(maxLength int, errorMessage string) ValidateFuncs {
 	}
 }
 
-func InRange(minLength, maxLength int, errorMessage string) ValidateFuncs {
+func LengthInRange(minLength, maxLength int, errorMessage string) ValidateFuncs {
 	return func(required bool, value interface{}) (bool, string) {
 		if errorMessage == "" {
 			errorMessage = BetweenLengthDefaultMessage

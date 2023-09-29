@@ -210,7 +210,7 @@ func TestBetween(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			validator := InRange(tt.minLength, tt.maxLength, tt.expectedError)
+			validator := LengthInRange(tt.minLength, tt.maxLength, tt.expectedError)
 			res, err := validator(tt.required, tt.value)
 			if tt.expectedResult != res {
 				t.Errorf("test result not as expected. Expected: %t; got: %t", tt.expectedResult, res)
