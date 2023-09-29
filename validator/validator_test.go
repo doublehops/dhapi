@@ -4,14 +4,14 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/doublehops/dhapi/responses"
+	"github.com/doublehops/dhapi/resp"
 )
 
 func TestValidate(t *testing.T) {
 	tests := []struct {
 		name           string
 		rules          []Rule
-		expectedErrors responses.ErrorMessages
+		expectedErrors resp.ErrMsgs
 	}{
 		{
 			name: "allPass",
@@ -20,10 +20,10 @@ func TestValidate(t *testing.T) {
 					VariableName: "Make",
 					Required:     true,
 					Value:        "Ford",
-					Function:     []ValidationFunctions{MinLength(4, "")},
+					Function:     []ValidateFuncs{MinLength(4, "")},
 				},
 			},
-			expectedErrors: responses.ErrorMessages{},
+			expectedErrors: resp.ErrMsgs{},
 		},
 		{
 			name: "makeFailMinLength",
@@ -32,10 +32,10 @@ func TestValidate(t *testing.T) {
 					VariableName: "Make",
 					Required:     true,
 					Value:        "Ford",
-					Function:     []ValidationFunctions{MinLength(10, "")},
+					Function:     []ValidateFuncs{MinLength(10, "")},
 				},
 			},
-			expectedErrors: responses.ErrorMessages{
+			expectedErrors: resp.ErrMsgs{
 				"Make": {MinLengthDefaultMessage},
 			},
 		},
@@ -46,10 +46,10 @@ func TestValidate(t *testing.T) {
 					VariableName: "Make",
 					Required:     true,
 					Value:        "",
-					Function:     []ValidationFunctions{MinLength(10, "")},
+					Function:     []ValidateFuncs{MinLength(10, "")},
 				},
 			},
-			expectedErrors: responses.ErrorMessages{
+			expectedErrors: resp.ErrMsgs{
 				"Make": {RequiredPropertyError},
 			},
 		},
@@ -60,10 +60,10 @@ func TestValidate(t *testing.T) {
 					VariableName: "Make",
 					Required:     true,
 					Value:        "Ford",
-					Function:     []ValidationFunctions{MinLength(10, "MyCustomerErrorMessage")},
+					Function:     []ValidateFuncs{MinLength(10, "MyCustomerErrorMessage")},
 				},
 			},
-			expectedErrors: responses.ErrorMessages{
+			expectedErrors: resp.ErrMsgs{
 				"Make": {"MyCustomerErrorMessage"},
 			},
 		},
