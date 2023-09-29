@@ -65,22 +65,23 @@ func MinLength(minLength int, errorMessage string) ValidationFunctions {
 
 /****************  USAGE  ******************/
 
-type Car struct {
-	Make  string
-	Model string
-	Year  int
+type Person struct {
+	Name         string
+	Age          string
+	EmailAddress string
 }
 
 func main() {
 
-	carInput := Car{
-		Make:  "Ford",
-		Model: "Falcon",
-		Year:  1972,
+	person := Person{
+		Name:         "Jo",
+		Age:          "Smith",
+		EmailAddress: "jo.smith",
 	}
 
 	rules := []Rule{
-		{"Make", carInput.Make, false, []ValidationFunctions{MinLength(13, "ErrorOverride")}},
+		{"name", person.Name, true, []ValidationFunctions{MinLength(13, "")}},
+		{"emailAddress", person.EmailAddress, false, []ValidationFunctions{EmailAddress("")}},
 	}
 
 	errors := RunValidation(rules)
