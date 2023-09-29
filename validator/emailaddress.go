@@ -10,19 +10,28 @@ const (
 
 func EmailAddress(errorMessage string) ValidationFunctions {
 	return func(required bool, value interface{}) (bool, string) {
+		var v string
+		var ok bool
+
 		if errorMessage == "" {
 			errorMessage = EmailAddressDefaultMessage
 		}
 
-		if v, ok := value.(string); ok {
-			if v == "" && !required {
-				return true, ""
-			}
+		if v, ok = value.(string); !ok {
+			return false, ProcessingPropertyError
+		}
 
-			re := regexp.MustCompile(emailPattern)
-			if re.MatchString(v) {
-				return true, ""
-			}
+		if v == "" && required {
+			return false, RequiredPropertyError
+		}
+
+		if v == "" && !required {
+			return true, ""
+		}
+
+		re := regexp.MustCompile(emailPattern)
+		if re.MatchString(v) {
+			return true, ""
 		}
 
 		return false, errorMessage

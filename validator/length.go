@@ -12,35 +12,55 @@ func MinLength(minLength int, errorMessage string) ValidationFunctions {
 			errorMessage = MinLengthDefaultMessage
 		}
 
-		if v, ok := value.(string); ok {
-			if v == "" && !required {
-				return true, ""
-			}
-			if len(v) >= minLength {
-				return true, ""
-			}
+		var v string
+		var ok bool
+
+		if v, ok = value.(string); !ok {
+			return false, ProcessingPropertyError
 		}
 
-		return false, errorMessage
+		if v == "" && required {
+			return false, RequiredPropertyError
+		}
+
+		if v == "" && !required {
+			return true, ""
+		}
+
+		if len(v) < minLength {
+			return false, errorMessage
+		}
+
+		return true, ""
 	}
 }
 
 func MaxLength(maxLength int, errorMessage string) ValidationFunctions {
 	return func(required bool, value interface{}) (bool, string) {
 		if errorMessage == "" {
-			errorMessage = MaxLengthDefaultMessage
+			errorMessage = BetweenLengthDefaultMessage
 		}
 
-		if v, ok := value.(string); ok {
-			if required && v == "" {
-				return false, errorMessage
-			}
-			if len(v) <= maxLength {
-				return true, ""
-			}
+		var v string
+		var ok bool
+
+		if v, ok = value.(string); !ok {
+			return false, ProcessingPropertyError
 		}
 
-		return false, errorMessage
+		if v == "" && required {
+			return false, RequiredPropertyError
+		}
+
+		if v == "" && !required {
+			return true, ""
+		}
+
+		if len(v) > maxLength {
+			return false, errorMessage
+		}
+
+		return true, ""
 	}
 }
 
@@ -50,13 +70,23 @@ func Between(minLength, maxLength int, errorMessage string) ValidationFunctions 
 			errorMessage = BetweenLengthDefaultMessage
 		}
 
-		if v, ok := value.(string); ok {
-			if !required && v == "" {
-				return true, ""
-			}
-			if len(v) >= minLength && len(v) <= maxLength {
-				return true, ""
-			}
+		var v string
+		var ok bool
+
+		if v, ok = value.(string); !ok {
+			return false, ProcessingPropertyError
+		}
+
+		if v == "" && required {
+			return false, RequiredPropertyError
+		}
+
+		if v == "" && !required {
+			return true, ""
+		}
+
+		if len(v) >= minLength && len(v) <= maxLength {
+			return true, ""
 		}
 
 		return false, errorMessage

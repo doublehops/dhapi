@@ -1,5 +1,10 @@
 package validator
 
+const (
+	RequiredPropertyError   = "this is a required property"
+	ProcessingPropertyError = "unable to process property"
+)
+
 type ValidationFunctions func(bool, interface{}) (bool, string)
 
 type Rule struct {

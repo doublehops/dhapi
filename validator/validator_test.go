@@ -24,7 +24,7 @@ func TestValidate(t *testing.T) {
 			expectedErrors: ErrorMessages{},
 		},
 		{
-			name: "makeFail",
+			name: "makeFailMinLength",
 			rules: []Rule{
 				{
 					VariableName: "Make",
@@ -35,6 +35,20 @@ func TestValidate(t *testing.T) {
 			},
 			expectedErrors: ErrorMessages{
 				"Make": {MinLengthDefaultMessage},
+			},
+		},
+		{
+			name: "makePropertyEmptyButRequired",
+			rules: []Rule{
+				{
+					VariableName: "Make",
+					Required:     true,
+					Value:        "",
+					Function:     []ValidationFunctions{MinLength(10, "")},
+				},
+			},
+			expectedErrors: ErrorMessages{
+				"Make": {RequiredPropertyError},
 			},
 		},
 		{

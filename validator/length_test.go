@@ -35,7 +35,7 @@ func TestMinLength(t *testing.T) {
 			required:       true,
 			length:         6,
 			expectedResult: false,
-			expectedError:  MinLengthDefaultMessage,
+			expectedError:  RequiredPropertyError,
 		},
 		{
 			name:           "tooShortAndRequired",
@@ -100,7 +100,7 @@ func TestMaxLength(t *testing.T) {
 			required:       true,
 			length:         6,
 			expectedResult: false,
-			expectedError:  MaxLengthDefaultMessage,
+			expectedError:  RequiredPropertyError,
 		},
 		{
 			name:           "tooLongAndRequired",

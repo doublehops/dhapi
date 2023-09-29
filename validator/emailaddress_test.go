@@ -25,6 +25,13 @@ func TestEmailAddress(t *testing.T) {
 			expectedError:  EmailAddressDefaultMessage,
 		},
 		{
+			name:           "emptyEmailAddressButIsRequired",
+			value:          "",
+			required:       true,
+			expectedResult: false,
+			expectedError:  RequiredPropertyError,
+		},
+		{
 			name:           "emptyEmailAddressButNotRequired",
 			value:          "",
 			required:       false,
