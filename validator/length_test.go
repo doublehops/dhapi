@@ -68,3 +68,76 @@ func TestMinLength(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxLength(t *testing.T) {
+	tests := []struct {
+		name           string
+		value          string
+		required       bool
+		length         int
+		expectedResult bool
+		expectedError  string
+	}{
+		{
+			name:           "maxLengthPass",
+			value:          "orange",
+			required:       true,
+			length:         6,
+			expectedResult: true,
+			expectedError:  "",
+		},
+		{
+			name:           "maxLengthEmptyButNotRequired",
+			value:          "",
+			required:       false,
+			length:         6,
+			expectedResult: true,
+			expectedError:  "",
+		},
+		{
+			name:           "maxLengthEmptyAndRequired",
+			value:          "",
+			required:       true,
+			length:         6,
+			expectedResult: true,
+			expectedError:  "",
+		},
+		{
+			name:           "tooLongAndRequired",
+			value:          "apple",
+			required:       true,
+			length:         4,
+			expectedResult: false,
+			expectedError:  MaxLengthDefaultMessage,
+		},
+		{
+			name:           "tooLongAndNotRequired",
+			value:          "apple",
+			required:       false,
+			length:         4,
+			expectedResult: false,
+			expectedError:  MaxLengthDefaultMessage,
+		},
+		{
+			name:           "testCustomErrorMessage",
+			value:          "apple",
+			required:       false,
+			length:         4,
+			expectedResult: false,
+			expectedError:  "myCustomMessage",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			validator := MaxLength(tt.length, tt.expectedError)
+			res, err := validator(tt.required, tt.value)
+			if tt.expectedResult != res {
+				t.Errorf("test result not as expected. Expected: %t; got: %t", tt.expectedResult, res)
+			}
+			if tt.expectedError != err {
+				t.Errorf("test result not as expected. Expected: %s; got: %s", tt.expectedError, err)
+			}
+		})
+	}
+}
