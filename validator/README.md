@@ -28,8 +28,8 @@ func main() {
     }
 
     rules := []Rule{
-        {"Name", person.Name, false, []ValidationFunctions{validator.MinLength(13, "")}},
-        {"Name", person.EmailAddress, false, []ValidationFunctions{validator.EmailAddress("My custom error message")}},
+        {"name", person.Name, false, []ValidationFunctions{validator.MinLength(13, "")}},
+        {"emailAddress", person.EmailAddress, false, []ValidationFunctions{validator.EmailAddress("My custom error message")}},
     }
     
     errors := RunValidation(rules)
