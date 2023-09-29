@@ -71,7 +71,6 @@ func TestValidate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
 			errors := RunValidation(tt.rules)
 			if !reflect.DeepEqual(tt.expectedErrors, errors) {
 				t.Errorf("Error not as expected. Expected: %v; got: %v", tt.expectedErrors, errors)

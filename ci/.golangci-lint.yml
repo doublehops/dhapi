@@ -24,6 +24,8 @@ output:
 linters:
   enable:
     - bodyclose
+    - errcheck
+    - ineffassign
     - cyclop
     - dogsled
     - dupl
@@ -37,7 +39,7 @@ linters:
     - gocritic
     - gofumpt
     - gosec
-    - govet
+    - staticcheck
     - nilerr
     - nlreturn
     - predeclared
