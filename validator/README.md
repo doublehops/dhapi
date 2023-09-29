@@ -4,6 +4,10 @@ This validation package is designed to make adding validation to API endpoints a
 easy to use as possible. Although common validation rules exist for use, it's easy to create
 custom ones as well as custom error messages.
 
+# TODO
+- See if it's possible to add required validation into `RunValidation` function.
+- Add CI/CD to Github rules - `golint` and automated tests.
+
 ## Example Usage
 
 You define the rules for each of the struct properties that need to be tested. Each
