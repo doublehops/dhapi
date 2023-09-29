@@ -6,7 +6,7 @@ custom ones as well as custom error messages.
 
 # TODO
 - See if it's possible to add required validation into `RunValidation` function.
-- Add CI/CD to Github rules - `golint` and automated tests.
+- Add CI/CD to GitHub rules - `golint` and automated tests.
 
 ## Example Usage
 

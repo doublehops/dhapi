@@ -37,6 +37,20 @@ func TestMinValue(t *testing.T) {
 			expectedResult: false,
 			expectedError:  MinValueDefaultMessage,
 		},
+		{
+			name:           "valueNotAssignedNotRequired",
+			required:       false,
+			minValue:       10,
+			expectedResult: true,
+			expectedError:  "",
+		},
+		{
+			name:           "valueNotAssignedButRequired",
+			required:       true,
+			minValue:       10,
+			expectedResult: false,
+			expectedError:  MinValueDefaultMessage,
+		},
 	}
 
 	for _, tt := range tests {
@@ -85,6 +99,20 @@ func TestMaxValue(t *testing.T) {
 			maxValue:       10,
 			expectedResult: false,
 			expectedError:  MaxValueDefaultMessage,
+		},
+		{
+			name:           "maxValueNotAssignedNotRequired",
+			required:       false,
+			maxValue:       10,
+			expectedResult: true,
+			expectedError:  "",
+		},
+		{
+			name:           "maxValueNotAssignedButRequired",
+			required:       true,
+			maxValue:       10,
+			expectedResult: true,
+			expectedError:  "",
 		},
 	}
 
@@ -143,6 +171,22 @@ func TestInInRange(t *testing.T) {
 			name:           "aboveRangeFail",
 			value:          7,
 			required:       false,
+			minValue:       3,
+			maxValue:       6,
+			expectedResult: false,
+			expectedError:  InRangeDefaultMessage,
+		},
+		{
+			name:           "notAssignedNotRequired",
+			required:       false,
+			minValue:       3,
+			maxValue:       6,
+			expectedResult: true,
+			expectedError:  "",
+		},
+		{
+			name:           "notAssignedButRequired",
+			required:       true,
 			minValue:       3,
 			maxValue:       6,
 			expectedResult: false,
