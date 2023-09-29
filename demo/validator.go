@@ -88,3 +88,24 @@ func main() {
 	j, _ := json.Marshal(errors)
 	fmt.Println(string(j))
 }
+
+func CustomValidation(errorMessage string) ValidationFunctions {
+	return func(required bool, value interface{}) (bool, string) {
+		if errorMessage == "" {
+			errorMessage = defaultErrorMessage
+		}
+
+		var v string
+		var ok bool
+
+		if v, ok = value.(string); !ok {
+			return false, errorMessage
+		}
+
+		if v == "my-custom-value" {
+			return true, ""
+		}
+
+		return false, errorMessage
+	}
+}

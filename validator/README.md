@@ -53,3 +53,30 @@ each could fail. It should be easy for any frontend to consume. An example would
 
 ## Adding a Custom Validation Rule
 
+You can create custom validation functions and use them just the same. The function
+must confirm to the `ValidateFuncs` signature. Create the function and then assign
+it to the variables in the `rules` slice like the pre-created functions.
+
+An example would be:
+```go
+func CustomValidation(errorMessage string) ValidationFunctions {
+	return func(required bool, value interface{}) (bool, string) {
+		if errorMessage == "" {
+			errorMessage = defaultErrorMessage
+		}
+
+		var v string
+		var ok bool
+
+		if v, ok = value.(string); !ok {
+			return false, errorMessage
+		}
+
+		if v == "my-custom-value" {
+			return true, ""
+		}
+
+		return false, errorMessage
+	}
+}
+```
