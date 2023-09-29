@@ -5,17 +5,10 @@ import (
 	"testing"
 )
 
-type Car struct {
-	Make  string
-	Model string
-	Year  int
-}
-
 func TestValidate(t *testing.T) {
 	tests := []struct {
-		name  string
-		rules []Rule
-		//payload        Car
+		name           string
+		rules          []Rule
 		expectedErrors ErrorMessages
 	}{
 		{
