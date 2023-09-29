@@ -1,9 +1,10 @@
 package validator
 
 import (
-	"github.com/doublehops/dhapi/responses"
 	"reflect"
 	"testing"
+
+	"github.com/doublehops/dhapi/responses"
 )
 
 func TestValidate(t *testing.T) {

@@ -18,8 +18,6 @@ type Rule struct {
 
 type Error string
 
-//type ErrorMessages map[string][]Error
-
 func RunValidation(rules []Rule) responses.ErrorMessages {
 	errorMessages := make(responses.ErrorMessages)
 
