@@ -42,10 +42,14 @@ func RunValidation(rules []Rule) ErrorMessages {
 	return errorMessages
 }
 
-const MinLengthError = "is not the minimum length"
+const MinLengthDefaultMessage = "is not the minimum length"
 
-func MinLength(minLength int) ValidationFunctions {
+func MinLength(minLength int, errorMessage string) ValidationFunctions {
 	return func(required bool, value interface{}) (bool, string) {
+		if errorMessage == "" {
+			errorMessage = MinLengthDefaultMessage
+		}
+
 		if v, ok := value.(string); ok {
 			if required && v == "" {
 				return true, ""
@@ -54,8 +58,8 @@ func MinLength(minLength int) ValidationFunctions {
 				return true, ""
 			}
 		}
-		
-		return false, MinLengthError
+
+		return false, errorMessage
 	}
 }
 
@@ -76,7 +80,7 @@ func main() {
 	}
 
 	rules := []Rule{
-		{"Make", carInput.Make, false, []ValidationFunctions{MinLength(13)}},
+		{"Make", carInput.Make, false, []ValidationFunctions{MinLength(13, "ErrorOverride")}},
 	}
 
 	errors := RunValidation(rules)
