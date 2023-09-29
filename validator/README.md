@@ -24,7 +24,7 @@ func main() {
     person := Person{
         Name:         "Jo",
         Age:          "Smith",
-        EmailAddress: "jo@example.com",
+        EmailAddress: "jo.smith",
     }
 
     rules := []Rule{
@@ -43,7 +43,7 @@ each could fail. It should be easy for any frontend to consume. An example would
 ```json
 {
   "emailAddress": [
-    "is not a valid email address"
+    "My custom error message"
   ],
   "name": [
     "is not the minimum length"
