@@ -171,6 +171,15 @@ func TestBetween(t *testing.T) {
 			expectedError:  "",
 		},
 		{
+			name:           "betweenEmptyButRequired",
+			value:          "",
+			required:       true,
+			minLength:      3,
+			maxLength:      6,
+			expectedResult: false,
+			expectedError:  RequiredPropertyError,
+		},
+		{
 			name:           "betweenTooShortAndRequired",
 			value:          "an",
 			required:       true,
