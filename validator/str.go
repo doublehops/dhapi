@@ -4,7 +4,7 @@ const (
 	keyNotInSlice = "value was not found in available items"
 )
 
-func In(slice []interface{}, errorMessage string) ValidateFuncs {
+func In(slice []interface{}, errorMessage string) ValidationFuncs {
 	return func(required bool, value interface{}) (bool, string) {
 		if errorMessage == "" {
 			errorMessage = keyNotInSlice

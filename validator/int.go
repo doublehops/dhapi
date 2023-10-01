@@ -6,7 +6,7 @@ const (
 	InRangeDefaultMessage  = "is not within required range"
 )
 
-func MinValue(minValue int, errorMessage string) ValidateFuncs {
+func MinValue(minValue int, errorMessage string) ValidationFuncs {
 	return func(required bool, value interface{}) (bool, string) {
 		if errorMessage == "" {
 			errorMessage = MinValueDefaultMessage
@@ -33,7 +33,7 @@ func MinValue(minValue int, errorMessage string) ValidateFuncs {
 	}
 }
 
-func MaxValue(maxValue int, errorMessage string) ValidateFuncs {
+func MaxValue(maxValue int, errorMessage string) ValidationFuncs {
 	return func(required bool, value interface{}) (bool, string) {
 		if errorMessage == "" {
 			errorMessage = MaxValueDefaultMessage
@@ -56,7 +56,7 @@ func MaxValue(maxValue int, errorMessage string) ValidateFuncs {
 	}
 }
 
-func IntInRange(minValue, maxValue int, errorMessage string) ValidateFuncs {
+func IntInRange(minValue, maxValue int, errorMessage string) ValidationFuncs {
 	return func(required bool, value interface{}) (bool, string) {
 		if errorMessage == "" {
 			errorMessage = InRangeDefaultMessage

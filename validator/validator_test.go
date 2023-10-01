@@ -20,7 +20,7 @@ func TestValidate(t *testing.T) {
 					VariableName: "Make",
 					Required:     true,
 					Value:        "Ford",
-					Function:     []ValidateFuncs{MinLength(4, "")},
+					Function:     []ValidationFuncs{MinLength(4, "")},
 				},
 			},
 			expectedErrors: resp.ErrMsgs{},
@@ -32,7 +32,7 @@ func TestValidate(t *testing.T) {
 					VariableName: "Make",
 					Required:     true,
 					Value:        "Ford",
-					Function:     []ValidateFuncs{MinLength(10, "")},
+					Function:     []ValidationFuncs{MinLength(10, "")},
 				},
 			},
 			expectedErrors: resp.ErrMsgs{
@@ -46,7 +46,7 @@ func TestValidate(t *testing.T) {
 					VariableName: "Make",
 					Required:     true,
 					Value:        "",
-					Function:     []ValidateFuncs{MinLength(10, "")},
+					Function:     []ValidationFuncs{MinLength(10, "")},
 				},
 			},
 			expectedErrors: resp.ErrMsgs{
@@ -60,7 +60,7 @@ func TestValidate(t *testing.T) {
 					VariableName: "Make",
 					Required:     true,
 					Value:        "Ford",
-					Function:     []ValidateFuncs{MinLength(10, "MyCustomerErrorMessage")},
+					Function:     []ValidationFuncs{MinLength(10, "MyCustomerErrorMessage")},
 				},
 			},
 			expectedErrors: resp.ErrMsgs{
