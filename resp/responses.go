@@ -6,8 +6,10 @@ import (
 )
 
 var (
-	ValidationError    = errors.New("one or more validation errors occurred")
-	CouldNotSaveRecord = errors.New("could not save record")
+	ValidationError        = errors.New("one or more validation errors occurred")
+	CouldNotSaveRecord     = errors.New("could not save record")
+	CouldNotParseRequest   = errors.New("could not parse request")
+	ErrorProcessingRequest = errors.New("there was an error processing the request")
 
 	NotFoundMsg = ErrorMessage{"message": "not found"}
 )
@@ -49,5 +51,27 @@ func GetValidateErrResp(errors ErrMsgs, errs ...string) ValidateErrResp {
 		Code:    http.StatusBadRequest,
 		Status:  "error",
 		Errors:  errors,
+	}
+}
+
+// UnableToParseResp will return a message indicating that the JSON request could not be parsed.
+func UnableToParseResp() ValidateErrResp {
+	return ValidateErrResp{
+		Name:    "Parsing error",
+		Message: CouldNotParseRequest.Error(),
+		Code:    http.StatusBadRequest,
+		Status:  "error",
+		Errors:  nil,
+	}
+}
+
+// ErrorProcessingRequestResp will return a message indicating that there was an error processing request.
+func ErrorProcessingRequestResp() ValidateErrResp {
+	return ValidateErrResp{
+		Name:    "Parsing error",
+		Message: ErrorProcessingRequest.Error(),
+		Code:    http.StatusInternalServerError,
+		Status:  "error",
+		Errors:  nil,
 	}
 }
